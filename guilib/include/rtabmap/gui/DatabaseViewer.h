@@ -52,7 +52,7 @@ namespace rtabmap
 {
 class Memory;
 class ImageView;
-class Signature;
+class SensorData;
 class CloudViewer;
 
 class RTABMAPGUI_EXP DatabaseViewer : public QMainWindow
@@ -105,6 +105,7 @@ private slots:
 	void resetConstraint();
 	void rejectConstraint();
 	void updateConstraintView();
+	void updateStereo();
 
 private:
 	QString getIniFilePath() const;
@@ -124,7 +125,7 @@ private:
 				QLabel * labelMapId,
 				QLabel * labelPose,
 				bool updateConstraintView);
-	void updateStereo(const Signature * data);
+	void updateStereo(const SensorData * data);
 	void updateWordsMatching();
 	void updateConstraintView(
 			const rtabmap::Link & link,
@@ -149,12 +150,15 @@ private:
 private:
 	Ui_DatabaseViewer * ui_;
 	QList<int> ids_;
+	std::map<int, int> mapIds_;
 	QMap<int, int> idToIndex_;
 	QList<rtabmap::Link> neighborLinks_;
 	QList<rtabmap::Link> loopLinks_;
 	rtabmap::Memory * memory_;
 	QString pathDatabase_;
+	std::string databaseFileName_;
 	std::list<std::map<int, rtabmap::Transform> > graphes_;
+	std::multimap<int, rtabmap::Link> graphLinks_;
 	std::map<int, rtabmap::Transform> poses_;
 	std::multimap<int, rtabmap::Link> links_;
 	std::multimap<int, rtabmap::Link> linksRefined_;
